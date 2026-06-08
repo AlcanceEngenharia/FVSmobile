@@ -898,39 +898,91 @@ body {
 <script>
 const FVS_DATA = [
   {
-    id:'massa', num:'FVS-01', color:'var(--c1)', colorbg:'var(--c1b)',
-    title:'Massa Corrida PVA / Acrílica',
-    sub:'Verificação de execução e qualidade de superfície',
-    norma:'NBR 15079 / NBR 7200',
+    id:'hidraulica', num:'FVS-01', color:'var(--c5)', colorbg:'var(--c5b)',
+    title:'Instalações Hidráulicas — Infra',
+    sub:'Conferência de infra hidráulica antes do revestimento',
+    norma:'NBR 5626 / NBR 8160',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco A / 4º Pav.', t:'text'},
+      {l:'Unidade / Ambiente', p:'ex: Apto 402 / Banheiro', t:'text'},
+      {l:'Data', p:'', t:'date'},
+      {l:'Encanador Responsável', p:'Nome', t:'text'},
+      {l:'Projeto Hidráulico Rev.', p:'ex: Rev. 01', t:'text'},
+    ],
+    groups:[
+      {g:'Ramais e Pontos', items:[
+        {t:'Pontos de água fria e quente na posição e cota conforme projeto', r:'NBR 5626'},
+        {t:'Ramais de esgoto com caimento mínimo correto (DN 75 = 1% / DN 100 = 0,5%) e sem contra-caimento', r:'NBR 8160'},
+        {t:'Ralos sifonados instalados, com grelha fixada e sifão funcional (teste de vedação de odores)', r:'NBR 8160'},
+      ]},
+      {g:'Conferências de Posicionamento', items:[
+        {t:'Registro e chuveiro centralizados com o box', r:'Projeto arquitetônico'},
+        {t:'Registro e chuveiro nivelados', r:'Inspeção visual'},
+        {t:'Vaso sanitário com o afastamento adequado da parede conforme projeto', r:'NBR 9050 / Projeto'},
+        {t:'Plug alinhado com o revestimento previsto', r:'Projeto arquitetônico'},
+      ]},
+      {g:'Registros e Documentação', items:[
+        {t:'Registros fotográficos realizados (pontos, cotas e posicionamento)', r:'Sistema de gestão'},
+        {t:'As Built realizado e atualizado conforme executado', r:'Boas práticas'},
+      ]},
+    ]
+  },
+  {
+    id:'imper', num:'FVS-02', color:'var(--c3)', colorbg:'var(--c3b)',
+    title:'Impermeabilização',
+    sub:"Banheiros, terraços, caixas d'água e áreas molhadas",
+    norma:'NBR 9575',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Local / Unidade', p:'ex: Banheiro Suíte / Apto 401', t:'text'},
+      {l:'Tipo de Impermeabilizante', p:'ex: Manta asfáltica, Cristalizante', t:'text'},
+      {l:'Data de Aplicação', p:'', t:'date'},
+      {l:'Data Teste Estanqueidade', p:'', t:'date'},
+      {l:'Fabricante / Lote', p:'Fabricante e nº do lote', t:'text'},
+    ],
+    groups:[
+      {g:'Pré-Aplicação', items:[
+        {t:'Substrato seco, limpo, isento de poeira, gordura, eflorescências e partes soltas', r:'NBR 9575'},
+        {t:'Cantos e quinas com arredondamento ou meia-cana de argamassa (raio mín. 4cm)', r:'NBR 9575'},
+        {t:'Primer/promotor de aderência aplicado conforme recomendação do fabricante', r:'Fabricante'},
+      ]},
+      {g:'Aplicação', items:[
+        {t:'Número de demãos e espessura seca conforme projeto e fabricante (mín. 2 demãos cruzadas)', r:'NBR 9575 / Fabricante'},
+        {t:'Altura de subida nas paredes conforme projeto (mín. 30cm acima do nível de água / 10cm em pisos secos)', r:'NBR 9575'},
+        {t:'Arremates em ralos, tubulações, grelhas e detalhes executados com reforço (camada extra + fibra)', r:'NBR 9575'},
+        {t:'Cura completa antes do teste de estanqueidade (mín. 72h para cristalizante / conforme fabricante)', r:'Fabricante'},
+      ]},
+      {g:'Teste de Estanqueidade (72h)', items:[
+        {t:"Ralo tampado e nível d'água marcado (lâmina ≥ 10cm); data e hora de início registradas", r:'NBR 9575'},
+        {t:"Após 72h: ausência de queda de nível d'água, manchas ou umidade no teto do pavimento inferior", r:'NBR 9575'},
+        {t:'Resultado do teste registrado em documento/foto com data, local e assinatura do responsável', r:'Sistema de gestão'},
+      ]},
+    ]
+  },
+  {
+    id:'forro_gesso', num:'FVS-03', color:'var(--c7)', colorbg:'var(--c7b)',
+    title:'Entrada do Forro de Gesso',
+    sub:'Conferência do teto antes da execução do forro',
+    norma:'NBR 15758 / NBR 13207',
     fields:[
       {l:'Obra', p:'Residencial Manaii', t:'text'},
       {l:'Bloco / Pavimento', p:'ex: Bloco A / 3º Pav.', t:'text'},
       {l:'Unidade / Ambiente', p:'ex: Apto 301 / Sala', t:'text'},
       {l:'Data', p:'', t:'date'},
-      {l:'Empreiteiro / Equipe', p:'Nome', t:'text'},
-      {l:'Produto / Fabricante', p:'ex: Weber, Quartzolit', t:'text'},
+      {l:'Gesseiro / Equipe', p:'Nome', t:'text'},
+      {l:'Responsável pela Vistoria', p:'Nome', t:'text'},
     ],
     groups:[
-      {g:'Pré-Execução', items:[
-        {t:'Substrato limpo, seco e isento de poeira, graxa ou eflorescências', r:'NBR 15079'},
-        {t:'Reboco/emboço base com espessura mínima e curado (mín. 28 dias para emboço)', r:'NBR 7200'},
-        {t:'Produto compatível com substrato (PVA interno / Acrílica interno-externo)', r:'Especificação de projeto'},
-      ]},
-      {g:'Execução', items:[
-        {t:'Número de demãos conforme especificação (mín. 2 demãos com lixamento entre elas)', r:'Fabricante / Projeto'},
-        {t:"Lixamento entre demãos realizado com lixa d'água grão adequado (≥ 120)", r:'Boas práticas'},
-        {t:'Intervalo de secagem respeitado entre demãos (mín. 4h ou conforme fabricante)', r:'Fabricante'},
-        {t:'Cantos e quinas tratados com massa e lixados corretamente', r:'Boas práticas'},
-      ]},
-      {g:'Pós-Execução', items:[
-        {t:'Superfície isenta de ondulações, riscos, bolhas ou marcas de rolo (régua 2m, tolerância ≤ 3mm)', r:'NBR 15575'},
-        {t:'Superfície aceita primer/tinta sem repelência ou mancha de umidade', r:'Inspeção visual'},
-        {t:'Limpeza do ambiente após execução (sem resíduos de massa ou lixa no piso)', r:'Boas práticas'},
+      {g:'Condições do Teto', items:[
+        {t:'Teto devidamente tratado com zarcão: pregos, arames e elementos metálicos removidos ou protegidos', r:'Boas práticas'},
+        {t:'Tubulações chumbadas corretamente no teto, sem folga, desalinhamento ou interferência no plano do forro', r:'NBR 15758 / Projeto'},
+        {t:'Registro fotográfico do teto realizado (geral e detalhes de tubulações e pontos de atenção)', r:'Sistema de gestão'},
       ]},
     ]
   },
   {
-    id:'ceramico', num:'FVS-02', color:'var(--c2)', colorbg:'var(--c2b)',
+    id:'ceramico', num:'FVS-04', color:'var(--c2)', colorbg:'var(--c2b)',
     title:'Revestimento Cerâmico / Porcelanato',
     sub:'Assentamento e rejunte — piso e parede',
     norma:'NBR 13755 / NBR 13754',
@@ -968,97 +1020,34 @@ const FVS_DATA = [
     ]
   },
   {
-    id:'imper', num:'FVS-03', color:'var(--c3)', colorbg:'var(--c3b)',
-    title:'Impermeabilização',
-    sub:"Banheiros, terraços, caixas d'água e áreas molhadas",
-    norma:'NBR 9575',
+    id:'massa', num:'FVS-05', color:'var(--c1)', colorbg:'var(--c1b)',
+    title:'Massa Corrida PVA / Acrílica',
+    sub:'Verificação de execução e qualidade de superfície',
+    norma:'NBR 15079 / NBR 7200',
     fields:[
       {l:'Obra', p:'Residencial Manaii', t:'text'},
-      {l:'Local / Unidade', p:'ex: Banheiro Suíte / Apto 401', t:'text'},
-      {l:'Tipo de Impermeabilizante', p:'ex: Manta asfáltica, Cristalizante', t:'text'},
-      {l:'Data de Aplicação', p:'', t:'date'},
-      {l:'Data Teste Estanqueidade', p:'', t:'date'},
-      {l:'Fabricante / Lote', p:'Fabricante e nº do lote', t:'text'},
-    ],
-    groups:[
-      {g:'Pré-Aplicação', items:[
-        {t:'Substrato seco, limpo, isento de poeira, gordura, eflorescências e partes soltas', r:'NBR 9575'},
-        {t:'Cantos e quinas com arredondamento ou meia-cana de argamassa (raio mín. 4cm)', r:'NBR 9575'},
-        {t:'Primer/promotor de aderência aplicado conforme recomendação do fabricante', r:'Fabricante'},
-      ]},
-      {g:'Aplicação', items:[
-        {t:'Número de demãos e espessura seca conforme projeto e fabricante (mín. 2 demãos cruzadas)', r:'NBR 9575 / Fabricante'},
-        {t:'Altura de subida nas paredes conforme projeto (mín. 30cm acima do nível de água / 10cm em pisos secos)', r:'NBR 9575'},
-        {t:'Arremates em ralos, tubulações, grelhas e detalhes executados com reforço (camada extra + fibra)', r:'NBR 9575'},
-        {t:'Cura completa antes do teste de estanqueidade (mín. 72h para cristalizante / conforme fabricante)', r:'Fabricante'},
-      ]},
-      {g:'Teste de Estanqueidade (72h)', items:[
-        {t:"Ralo tampado e nível d'água marcado (lâmina ≥ 10cm); data e hora de início registradas", r:'NBR 9575'},
-        {t:"Após 72h: ausência de queda de nível d'água, manchas ou umidade no teto do pavimento inferior", r:'NBR 9575'},
-        {t:'Resultado do teste registrado em documento/foto com data, local e assinatura do responsável', r:'Sistema de gestão'},
-      ]},
-    ]
-  },
-  {
-    id:'eletrica', num:'FVS-04', color:'var(--c4)', colorbg:'var(--c4b)',
-    title:'Instalações Elétricas — Acabamentos',
-    sub:'Tomadas, interruptores, luminárias, QD e testes',
-    norma:'NBR 5410',
-    fields:[
-      {l:'Obra', p:'Residencial Manaii', t:'text'},
-      {l:'Bloco / Pavimento', p:'ex: Bloco C / 1º Pav.', t:'text'},
-      {l:'Unidade / Circuito', p:'ex: Apto 101 / Circ. 3', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco A / 3º Pav.', t:'text'},
+      {l:'Unidade / Ambiente', p:'ex: Apto 301 / Sala', t:'text'},
       {l:'Data', p:'', t:'date'},
-      {l:'Eletricista Responsável', p:'Nome', t:'text'},
-      {l:'Projeto Elétrico Rev.', p:'ex: Rev. 02', t:'text'},
+      {l:'Empreiteiro / Equipe', p:'Nome', t:'text'},
+      {l:'Produto / Fabricante', p:'ex: Weber, Quartzolit', t:'text'},
     ],
     groups:[
-      {g:'Acabamentos de Pontos', items:[
-        {t:'Tomadas e interruptores instalados no prumo, nível e altura conforme projeto (tomadas 30cm / interruptores 100cm)', r:'NBR 5410 / Projeto'},
-        {t:'Placas e espelhos fixados corretamente, sem folga, nivelados e sem dano estético', r:'NBR 5410'},
-        {t:'Tomadas de uso geral com proteção (TUG) conforme NBR; tomadas em banheiros e cozinha com DR', r:'NBR 5410'},
-        {t:'Pontos de iluminação conferidos com projeto (posição, tipo de luminária, caixa de teto nivelada)', r:'Projeto elétrico'},
+      {g:'Pré-Execução', items:[
+        {t:'Substrato limpo, seco e isento de poeira, graxa ou eflorescências', r:'NBR 15079'},
+        {t:'Reboco/emboço base com espessura mínima e curado (mín. 28 dias para emboço)', r:'NBR 7200'},
+        {t:'Produto compatível com substrato (PVA interno / Acrílica interno-externo)', r:'Especificação de projeto'},
       ]},
-      {g:'Quadro de Distribuição', items:[
-        {t:'QD instalado na posição correta, nível e fixado firmemente; tampa e identificação de circuitos afixadas', r:'NBR 5410'},
-        {t:'Disjuntores de capacidade correta por circuito conforme projeto; identificados e sem dano', r:'Projeto elétrico'},
-        {t:'DR (dispositivo diferencial-residual) instalado para circuitos de banheiro, cozinha e área de serviço', r:'NBR 5410'},
+      {g:'Execução', items:[
+        {t:'Número de demãos conforme especificação (mín. 2 demãos com lixamento entre elas)', r:'Fabricante / Projeto'},
+        {t:"Lixamento entre demãos realizado com lixa d'água grão adequado (≥ 120)", r:'Boas práticas'},
+        {t:'Intervalo de secagem respeitado entre demãos (mín. 4h ou conforme fabricante)', r:'Fabricante'},
+        {t:'Cantos e quinas tratados com massa e lixados corretamente', r:'Boas práticas'},
       ]},
-      {g:'Testes Funcionais', items:[
-        {t:'Teste de continuidade e aterramento realizados e registrados por circuito', r:'NBR 5410'},
-        {t:'Acionamento de todos os pontos de iluminação e tomadas verificado (voltímetro / lâmpada de teste)', r:'Inspeção funcional'},
-        {t:'Ausência de cabos expostos, caixas abertas ou conduítes sem acabamento', r:'NBR 5410'},
-      ]},
-    ]
-  },
-  {
-    id:'hidraulica', num:'FVS-05', color:'var(--c5)', colorbg:'var(--c5b)',
-    title:'Instalações Hidráulicas — Infra',
-    sub:'Conferência de infra hidráulica antes do revestimento',
-    norma:'NBR 5626 / NBR 8160',
-    fields:[
-      {l:'Obra', p:'Residencial Manaii', t:'text'},
-      {l:'Bloco / Pavimento', p:'ex: Bloco A / 4º Pav.', t:'text'},
-      {l:'Unidade / Ambiente', p:'ex: Apto 402 / Banheiro', t:'text'},
-      {l:'Data', p:'', t:'date'},
-      {l:'Encanador Responsável', p:'Nome', t:'text'},
-      {l:'Projeto Hidráulico Rev.', p:'ex: Rev. 01', t:'text'},
-    ],
-    groups:[
-      {g:'Ramais e Pontos', items:[
-        {t:'Pontos de água fria e quente na posição e cota conforme projeto', r:'NBR 5626'},
-        {t:'Ramais de esgoto com caimento mínimo correto (DN 75 = 1% / DN 100 = 0,5%) e sem contra-caimento', r:'NBR 8160'},
-        {t:'Ralos sifonados instalados, com grelha fixada e sifão funcional (teste de vedação de odores)', r:'NBR 8160'},
-      ]},
-      {g:'Conferências de Posicionamento', items:[
-        {t:'Registro e chuveiro centralizados com o box', r:'Projeto arquitetônico'},
-        {t:'Registro e chuveiro nivelados', r:'Inspeção visual'},
-        {t:'Vaso sanitário com o afastamento adequado da parede conforme projeto', r:'NBR 9050 / Projeto'},
-        {t:'Plug alinhado com o revestimento previsto', r:'Projeto arquitetônico'},
-      ]},
-      {g:'Registros e Documentação', items:[
-        {t:'Registros fotográficos realizados (pontos, cotas e posicionamento)', r:'Sistema de gestão'},
-        {t:'As Built realizado e atualizado conforme executado', r:'Boas práticas'},
+      {g:'Pós-Execução', items:[
+        {t:'Superfície isenta de ondulações, riscos, bolhas ou marcas de rolo (régua 2m, tolerância ≤ 3mm)', r:'NBR 15575'},
+        {t:'Superfície aceita primer/tinta sem repelência ou mancha de umidade', r:'Inspeção visual'},
+        {t:'Limpeza do ambiente após execução (sem resíduos de massa ou lixa no piso)', r:'Boas práticas'},
       ]},
     ]
   },
@@ -1096,23 +1085,34 @@ const FVS_DATA = [
     ]
   },
   {
-    id:'forro_gesso', num:'FVS-07', color:'var(--c7)', colorbg:'var(--c7b)',
-    title:'Entrada do Forro de Gesso',
-    sub:'Conferência do teto antes da execução do forro',
-    norma:'NBR 15758 / NBR 13207',
+    id:'eletrica', num:'FVS-07', color:'var(--c4)', colorbg:'var(--c4b)',
+    title:'Instalações Elétricas — Acabamentos',
+    sub:'Tomadas, interruptores, luminárias, QD e testes',
+    norma:'NBR 5410',
     fields:[
       {l:'Obra', p:'Residencial Manaii', t:'text'},
-      {l:'Bloco / Pavimento', p:'ex: Bloco A / 3º Pav.', t:'text'},
-      {l:'Unidade / Ambiente', p:'ex: Apto 301 / Sala', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco C / 1º Pav.', t:'text'},
+      {l:'Unidade / Circuito', p:'ex: Apto 101 / Circ. 3', t:'text'},
       {l:'Data', p:'', t:'date'},
-      {l:'Gesseiro / Equipe', p:'Nome', t:'text'},
-      {l:'Responsável pela Vistoria', p:'Nome', t:'text'},
+      {l:'Eletricista Responsável', p:'Nome', t:'text'},
+      {l:'Projeto Elétrico Rev.', p:'ex: Rev. 02', t:'text'},
     ],
     groups:[
-      {g:'Condições do Teto', items:[
-        {t:'Teto devidamente tratado com zarcão: pregos, arames e elementos metálicos removidos ou protegidos', r:'Boas práticas'},
-        {t:'Tubulações chumbadas corretamente no teto, sem folga, desalinhamento ou interferência no plano do forro', r:'NBR 15758 / Projeto'},
-        {t:'Registro fotográfico do teto realizado (geral e detalhes de tubulações e pontos de atenção)', r:'Sistema de gestão'},
+      {g:'Acabamentos de Pontos', items:[
+        {t:'Tomadas e interruptores instalados no prumo, nível e altura conforme projeto (tomadas 30cm / interruptores 100cm)', r:'NBR 5410 / Projeto'},
+        {t:'Placas e espelhos fixados corretamente, sem folga, nivelados e sem dano estético', r:'NBR 5410'},
+        {t:'Tomadas de uso geral com proteção (TUG) conforme NBR; tomadas em banheiros e cozinha com DR', r:'NBR 5410'},
+        {t:'Pontos de iluminação conferidos com projeto (posição, tipo de luminária, caixa de teto nivelada)', r:'Projeto elétrico'},
+      ]},
+      {g:'Quadro de Distribuição', items:[
+        {t:'QD instalado na posição correta, nível e fixado firmemente; tampa e identificação de circuitos afixadas', r:'NBR 5410'},
+        {t:'Disjuntores de capacidade correta por circuito conforme projeto; identificados e sem dano', r:'Projeto elétrico'},
+        {t:'DR (dispositivo diferencial-residual) instalado para circuitos de banheiro, cozinha e área de serviço', r:'NBR 5410'},
+      ]},
+      {g:'Testes Funcionais', items:[
+        {t:'Teste de continuidade e aterramento realizados e registrados por circuito', r:'NBR 5410'},
+        {t:'Acionamento de todos os pontos de iluminação e tomadas verificado (voltímetro / lâmpada de teste)', r:'Inspeção funcional'},
+        {t:'Ausência de cabos expostos, caixas abertas ou conduítes sem acabamento', r:'NBR 5410'},
       ]},
     ]
   },
@@ -1131,10 +1131,10 @@ const FVS_COLORS = {
 
 const PAGE_LABELS = {
   dashboard:'Dashboard', pdf:'Exportar PDF',
-  massa:'FVS-01 · Massa Corrida', ceramico:'FVS-02 · Cerâmico',
-  imper:'FVS-03 · Impermeabilização', eletrica:'FVS-04 · Elétrica',
-  hidraulica:'FVS-05 · Hidráulica', gesso:'FVS-06 · Gesso',
-  forro_gesso:'FVS-07 · Entrada Forro'
+  massa:'FVS-05 · Massa Corrida', ceramico:'FVS-04 · Cerâmico',
+  imper:'FVS-02 · Impermeabilização', eletrica:'FVS-07 · Elétrica',
+  hidraulica:'FVS-01 · Hidráulica', gesso:'FVS-06 · Gesso',
+  forro_gesso:'FVS-03 · Entrada Forro'
 };
 
 function countItems(fvs) {
@@ -1536,7 +1536,7 @@ function buildFvsHTMLForPrint(fvs) {
 function buildCoverHTMLForPrint() {
   const now = new Date();
   const ds = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  const numMap = {massa:'FVS-01',ceramico:'FVS-02',imper:'FVS-03',eletrica:'FVS-04',hidraulica:'FVS-05',gesso:'FVS-06',forro_gesso:'FVS-07'};
+  const numMap = {hidraulica:'FVS-01',imper:'FVS-02',forro_gesso:'FVS-03',ceramico:'FVS-04',massa:'FVS-05',gesso:'FVS-06',eletrica:'FVS-07'};
   let rows = '';
   FVS_DATA.forEach(fvs => {
     const s = getStats(fvs.id);

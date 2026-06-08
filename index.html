@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>FVS — Manaii</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0B0D;
+  --s1: #111216;
+  --s2: #18191F;
+  --s3: #1E2028;
+  --bd: rgba(255,255,255,0.07);
+  --bd2: rgba(255,255,255,0.13);
+  --tx: #F0F1F5;
+  --mu: #6B6F80;
+  --mu2: #9095A8;
+  --ac: #F0A500;
+  --ok: #22C55E; --okb: rgba(34,197,94,0.13);
+  --nc: #EF4444; --ncb: rgba(239,68,68,0.13);
+  --na: #6B7280; --nab: rgba(107,114,128,0.10);
+  --pe: #F0A500; --peb: rgba(240,165,0,0.13);
+  --c1:#60A5FA; --c1b:rgba(96,165,250,0.13);
+  --c2:#34D399; --c2b:rgba(52,211,153,0.13);
+  --c3:#A78BFA; --c3b:rgba(167,139,250,0.13);
+  --c4:#FBBF24; --c4b:rgba(251,191,36,0.13);
+  --c5:#38BDF8; --c5b:rgba(56,189,248,0.13);
+  --c6:#F472B6; --c6b:rgba(244,114,182,0.13);
+  --c7:#FB923C; --c7b:rgba(251,146,60,0.13);
+  --fn: 'Inter', system-ui, sans-serif;
+  --fm: 'JetBrains Mono', monospace;
+  --nav-h: 60px;
+  --top-h: 52px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--fn);
+  background: var(--bg);
+  color: var(--tx);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  height: var(--top-h);
+  background: var(--s1);
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 10px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.topbar-logo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.topbar-obra {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ac);
+  line-height: 1;
+}
+
+.topbar-page {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tx);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-chips {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.chip {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--fm);
+  padding: 3px 7px;
+  border-radius: 20px;
+}
+
+.chip-ok   { background: var(--okb); color: var(--ok); }
+.chip-nc   { background: var(--ncb); color: var(--nc); }
+.chip-pe   { background: var(--peb); color: var(--pe); }
+
+/* ── SCROLL AREA ── */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--nav-h) + 8px);
+}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  height: var(--nav-h);
+  background: var(--s1);
+  border-top: 1px solid var(--bd);
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  position: relative;
+  z-index: 10;
+}
+
+.bnav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  color: var(--mu);
+  transition: color 0.15s;
+  font-size: 10px;
+  font-weight: 500;
+  position: relative;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.bnav-item.active { color: var(--ac); }
+.bnav-item.active::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 2px;
+  background: var(--ac);
+  border-radius: 0 0 2px 2px;
+}
+
+.bnav-icon {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.bnav-icon svg { width: 20px; height: 20px; }
+
+.bnav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  margin-bottom: 2px;
+}
+
+/* ── FVS DRAWER ── */
+.fvs-drawer {
+  display: none;
+  position: fixed;
+  inset: var(--top-h) 0 var(--nav-h) 0;
+  background: var(--bg);
+  z-index: 20;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fvs-drawer.open { display: flex; }
+
+.drawer-header {
+  padding: 14px 16px 12px;
+  background: var(--s1);
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drawer-close {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--bd);
+  background: transparent;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--mu2);
+  flex-shrink: 0;
+}
+
+.drawer-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--bd);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.drawer-item:active { background: var(--s3); }
+
+.drawer-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+.drawer-item-info { flex: 1; min-width: 0; }
+
+.drawer-item-num {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--fm);
+  color: var(--mu);
+  margin-bottom: 1px;
+}
+
+.drawer-item-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--tx);
+}
+
+.drawer-badge {
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--fm);
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.db-pend { background: var(--peb); color: var(--pe); }
+.db-ok   { background: var(--okb); color: var(--ok); }
+.db-nc   { background: var(--ncb); color: var(--nc); }
+
+/* ── PAGES ── */
+.page { display: none; padding: 0; }
+.page.active { display: block; }
+
+/* ── DASHBOARD ── */
+.dash-hero {
+  padding: 20px 16px 16px;
+  background: var(--s1);
+  border-bottom: 1px solid var(--bd);
+}
+
+.dash-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.dash-sub {
+  font-size: 12px;
+  color: var(--mu);
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--bd);
+  border-top: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+}
+
+.stat-cell {
+  background: var(--s2);
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.stat-val {
+  font-size: 22px;
+  font-weight: 600;
+  font-family: var(--fm);
+  line-height: 1;
+}
+
+.stat-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mu);
+  margin-top: 3px;
+}
+
+.fvs-list { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+
+.fvs-card {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: 12px;
+  padding: 14px 14px 12px;
+  cursor: pointer;
+  transition: background 0.12s;
+  position: relative;
+  overflow: hidden;
+}
+
+.fvs-card:active { background: var(--s3); }
+
+.fvs-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.fvs-badge-num {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--fm);
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.fvs-card-titles { flex: 1; min-width: 0; }
+
+.fvs-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.fvs-card-sub {
+  font-size: 11px;
+  color: var(--mu);
+  margin-top: 2px;
+}
+
+.fvs-card-status {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--fm);
+  padding: 2px 8px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.fvs-prog-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prog-bar {
+  flex: 1;
+  height: 3px;
+  background: var(--s1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+.prog-pct {
+  font-size: 10px;
+  font-family: var(--fm);
+  color: var(--mu);
+  min-width: 30px;
+  text-align: right;
+}
+
+.fvs-mini-stats {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.mini-s {
+  font-size: 10px;
+  font-family: var(--fm);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+/* ── FVS PANEL ── */
+.panel-head {
+  padding: 16px;
+  background: var(--s1);
+  border-bottom: 1px solid var(--bd);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.panel-icon-m {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; font-family: var(--fm);
+  flex-shrink: 0;
+}
+
+.panel-head-text { flex: 1; min-width: 0; }
+
+.panel-title-m {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.panel-sub-m {
+  font-size: 11px;
+  color: var(--mu);
+  margin-top: 2px;
+}
+
+.panel-status-wrap {
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+/* ── FIELDS ── */
+.fields-section {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.fields-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mu);
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mu);
+}
+
+.field-inp {
+  background: var(--s3);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--tx);
+  font-family: var(--fn);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+.field-inp:focus { border-color: var(--ac); }
+.field-inp::placeholder { color: var(--mu); }
+.field-inp[type="date"] { color-scheme: dark; }
+
+/* ── CHECKLIST ── */
+.checklist-section {
+  border-bottom: 1px solid var(--bd);
+}
+
+.cl-header {
+  padding: 8px 16px;
+  background: var(--s3);
+  border-bottom: 1px solid var(--bd);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mu);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cl-header-actions { display: flex; gap: 16px; }
+
+.cl-group-title {
+  padding: 8px 16px;
+  background: var(--s3);
+  border-bottom: 1px solid var(--bd);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cl-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--bd);
+  transition: background 0.1s;
+}
+
+.cl-item.is-conf { background: rgba(34,197,94,0.04); }
+.cl-item.is-nc   { background: rgba(239,68,68,0.04); }
+.cl-item.is-na   { background: rgba(107,114,128,0.04); }
+
+.cl-item-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.cl-item-num {
+  font-size: 11px;
+  font-family: var(--fm);
+  color: var(--mu);
+  min-width: 20px;
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.cl-item-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--tx);
+  flex: 1;
+}
+
+.cl-item-ref {
+  display: inline-block;
+  font-size: 10px;
+  font-family: var(--fm);
+  color: var(--mu);
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 1px 6px;
+  margin-top: 4px;
+  margin-left: 30px;
+}
+
+/* Touch-friendly 3-button row */
+.cl-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-top: 0;
+}
+
+.cl-btn {
+  padding: 10px 0;
+  border-radius: 8px;
+  border: 1px solid var(--bd);
+  background: var(--s3);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mu);
+  transition: all 0.12s;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.cl-btn:active { transform: scale(0.96); }
+.cl-btn.active-conf { background: var(--okb); border-color: var(--ok); color: var(--ok); }
+.cl-btn.active-nc   { background: var(--ncb); border-color: var(--nc); color: var(--nc); }
+.cl-btn.active-na   { background: var(--nab); border-color: var(--na); color: var(--na); }
+
+/* ── RESULT STRIP ── */
+.result-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 2px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+  background: var(--s2);
+}
+
+.rs-cell {
+  text-align: center;
+  padding: 12px 4px;
+  border-right: 1px solid var(--bd);
+}
+
+.rs-cell:last-child { border-right: none; }
+
+.rs-num {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: var(--fm);
+  line-height: 1;
+}
+
+.rs-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mu);
+  margin-top: 3px;
+}
+
+/* ── STATUS BADGE ── */
+.st-badge {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: var(--fm);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.st-a { background: var(--okb); color: var(--ok); border-color: var(--ok); }
+.st-r { background: var(--ncb); color: var(--nc); border-color: var(--nc); }
+.st-p { background: var(--peb); color: var(--pe); border-color: var(--pe); }
+
+/* ── STATUS BAR ── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--s2);
+  border-bottom: 1px solid var(--bd);
+}
+
+.status-bar-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mu);
+}
+
+/* ── OBS ── */
+.obs-section {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.obs-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mu);
+  margin-bottom: 8px;
+}
+
+.obs-inp {
+  width: 100%;
+  background: var(--s3);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--tx);
+  font-family: var(--fn);
+  resize: none;
+  outline: none;
+  min-height: 72px;
+  line-height: 1.5;
+  -webkit-appearance: none;
+}
+
+.obs-inp::placeholder { color: var(--mu); }
+.obs-inp:focus { border-color: var(--ac); }
+
+/* ── ASSINATURAS ── */
+.assin-section {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-bottom: 1px solid var(--bd);
+}
+
+.assin-box-m {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.assin-lbl-m {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mu);
+  margin-bottom: 20px;
+}
+
+.assin-line-m {
+  border-bottom: 1px solid var(--bd2);
+  margin-bottom: 5px;
+}
+
+.assin-sub-m {
+  font-size: 11px;
+  color: var(--mu);
+}
+
+/* ── PDF SECTION ── */
+.pdf-section {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pdf-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mu);
+}
+
+.pdf-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--bd);
+  background: var(--s2);
+  cursor: pointer;
+  transition: background 0.12s;
+  width: 100%;
+  text-align: left;
+  color: var(--tx);
+}
+
+.pdf-btn:active { background: var(--s3); }
+
+.pdf-btn.primary {
+  background: var(--ac);
+  border-color: var(--ac);
+  color: #000;
+}
+
+.pdf-btn.primary:active { background: #FFB800; }
+
+.pdf-btn-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--s3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.pdf-btn.primary .pdf-btn-icon { background: rgba(0,0,0,0.15); }
+
+.pdf-btn-info { flex: 1; min-width: 0; }
+.pdf-btn-name { font-size: 14px; font-weight: 600; }
+.pdf-btn-sub { font-size: 11px; color: var(--mu2); margin-top: 1px; }
+.pdf-btn.primary .pdf-btn-sub { color: rgba(0,0,0,0.5); }
+
+/* ── PRINT ── */
+@media print {
+  @page { size: A4 portrait; margin: 10mm 8mm; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  html, body { visibility: hidden !important; background: white !important; }
+  #print-container, #print-container * { visibility: visible !important; }
+  #print-container { display: block !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; background: white !important; z-index: 999999 !important; }
+}
+#print-container { display: none; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-obra">Residencial Manaii</div>
+    <div class="topbar-page" id="topbar-page">Dashboard</div>
+  </div>
+  <div class="topbar-chips">
+    <span class="chip chip-ok" id="chip-ok">✓ 0</span>
+    <span class="chip chip-nc" id="chip-nc">✗ 0</span>
+    <span class="chip chip-pe" id="chip-pe">◎ 69</span>
+  </div>
+</div>
+
+<!-- SCROLL AREA -->
+<div class="scroll-area" id="scroll-area">
+
+  <!-- DASHBOARD PAGE -->
+  <div class="page active" id="page-dashboard">
+    <div class="dash-hero">
+      <div class="dash-title">Painel de Vistoria</div>
+      <div class="dash-sub">7 fichas · 69 itens · Fase de acabamentos</div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-cell"><div class="stat-val" style="color:var(--ok)" id="ds-conf">0</div><div class="stat-lbl">Conf.</div></div>
+      <div class="stat-cell"><div class="stat-val" style="color:var(--nc)" id="ds-nc">0</div><div class="stat-lbl">N.Conf.</div></div>
+      <div class="stat-cell"><div class="stat-val" style="color:var(--pe)" id="ds-pend">69</div><div class="stat-lbl">Pend.</div></div>
+    </div>
+    <div class="fvs-list" id="fvs-card-list"></div>
+  </div>
+
+  <!-- FVS PANELS (built by JS) -->
+  <div id="fvs-panels"></div>
+
+  <!-- PDF PAGE -->
+  <div class="page" id="page-pdf">
+    <div class="dash-hero">
+      <div class="dash-title">Exportar PDF</div>
+      <div class="dash-sub">Gere o relatório de cada ficha individualmente</div>
+    </div>
+    <div class="pdf-section">
+      <div class="pdf-section-title">Fichas individuais</div>
+      <div id="pdf-btns-list"></div>
+      <div style="margin-top:4px">
+        <button class="pdf-btn primary" onclick="gerarPDF('todas')">
+          <div class="pdf-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="pdf-btn-info">
+            <div class="pdf-btn-name">Relatório Completo</div>
+            <div class="pdf-btn-sub">Capa + 7 fichas em um PDF</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bnav-item active" id="bnav-dashboard" onclick="showPage('dashboard')">
+    <div class="bnav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    </div>
+    Painel
+  </button>
+  <button class="bnav-item" id="bnav-fvs" onclick="toggleFvsDrawer()">
+    <div class="bnav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    </div>
+    Fichas
+  </button>
+  <button class="bnav-item" id="bnav-pdf" onclick="showPage('pdf')">
+    <div class="bnav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+    </div>
+    PDF
+  </button>
+</nav>
+
+<!-- FVS DRAWER (sheet que aparece acima do nav) -->
+<div class="fvs-drawer" id="fvs-drawer">
+  <div class="drawer-header">
+    <button class="drawer-close" onclick="toggleFvsDrawer()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div style="font-size:14px;font-weight:600;color:var(--tx)">Selecionar FVS</div>
+  </div>
+  <div class="drawer-list" id="drawer-list"></div>
+</div>
+
+<script>
+const FVS_DATA = [
+  {
+    id:'massa', num:'FVS-01', color:'var(--c1)', colorbg:'var(--c1b)',
+    title:'Massa Corrida PVA / Acrílica',
+    sub:'Verificação de execução e qualidade de superfície',
+    norma:'NBR 15079 / NBR 7200',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco A / 3º Pav.', t:'text'},
+      {l:'Unidade / Ambiente', p:'ex: Apto 301 / Sala', t:'text'},
+      {l:'Data', p:'', t:'date'},
+      {l:'Empreiteiro / Equipe', p:'Nome', t:'text'},
+      {l:'Produto / Fabricante', p:'ex: Weber, Quartzolit', t:'text'},
+    ],
+    groups:[
+      {g:'Pré-Execução', items:[
+        {t:'Substrato limpo, seco e isento de poeira, graxa ou eflorescências', r:'NBR 15079'},
+        {t:'Reboco/emboço base com espessura mínima e curado (mín. 28 dias para emboço)', r:'NBR 7200'},
+        {t:'Produto compatível com substrato (PVA interno / Acrílica interno-externo)', r:'Especificação de projeto'},
+      ]},
+      {g:'Execução', items:[
+        {t:'Número de demãos conforme especificação (mín. 2 demãos com lixamento entre elas)', r:'Fabricante / Projeto'},
+        {t:"Lixamento entre demãos realizado com lixa d'água grão adequado (≥ 120)", r:'Boas práticas'},
+        {t:'Intervalo de secagem respeitado entre demãos (mín. 4h ou conforme fabricante)', r:'Fabricante'},
+        {t:'Cantos e quinas tratados com massa e lixados corretamente', r:'Boas práticas'},
+      ]},
+      {g:'Pós-Execução', items:[
+        {t:'Superfície isenta de ondulações, riscos, bolhas ou marcas de rolo (régua 2m, tolerância ≤ 3mm)', r:'NBR 15575'},
+        {t:'Superfície aceita primer/tinta sem repelência ou mancha de umidade', r:'Inspeção visual'},
+        {t:'Limpeza do ambiente após execução (sem resíduos de massa ou lixa no piso)', r:'Boas práticas'},
+      ]},
+    ]
+  },
+  {
+    id:'ceramico', num:'FVS-02', color:'var(--c2)', colorbg:'var(--c2b)',
+    title:'Revestimento Cerâmico / Porcelanato',
+    sub:'Assentamento e rejunte — piso e parede',
+    norma:'NBR 13755 / NBR 13754',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco B / 2º Pav.', t:'text'},
+      {l:'Unidade / Ambiente', p:'ex: Apto 201 / Banheiro', t:'text'},
+      {l:'Data', p:'', t:'date'},
+      {l:'Tipo de Peça', p:'ex: Porcelanato 60x120', t:'text'},
+      {l:'Argamassa / Fabricante', p:'ex: ACIII, Votoran', t:'text'},
+    ],
+    groups:[
+      {g:'Pré-Assentamento', items:[
+        {t:'Projeto de assentamento definido (paginação, juntas, caimento em áreas molhadas)', r:'Projeto arquitetônico'},
+        {t:'Contrapiso/base nivelado, seco e limpo; planeza verificada com régua (tolerância ≤ 3mm / 2m)', r:'NBR 15575'},
+        {t:'Impermeabilização executada e aprovada antes do revestimento em áreas molhadas', r:'NBR 9575'},
+      ]},
+      {g:'Assentamento', items:[
+        {t:'Argamassa de assentamento correta para o tipo de peça e substrato (ACII ou ACIII)', r:'NBR 14081'},
+        {t:'Cobertura de argamassa no tardoz ≥ 80% (área seca) e ≥ 95% (área molhada); sem vazios', r:'NBR 13755 / 13754'},
+        {t:'Alinhamento de juntas, prumo e nível verificados; peças batedas com desempenadeira e soquete plástico', r:'NBR 13755'},
+        {t:'Espaçadores utilizados; largura de junta conforme projeto (≥ 3mm parede / ≥ 5mm piso)', r:'NBR 13755 / 13754'},
+        {t:'Juntas de movimentação executadas conforme projeto (perímetro, piso/parede, módulos de 4m)', r:'NBR 13754 / NBR 7190'},
+        {t:'Caimento do piso em direção ao ralo verificado (mín. 0,5% banheiros / 1% áreas externas)', r:'NBR 9050 / Projeto'},
+      ]},
+      {g:'Rejunte e Pós-Execução', items:[
+        {t:'Rejunte aplicado após cura mínima da argamassa (mín. 72h); cor conforme especificação', r:'Fabricante / Projeto'},
+        {t:'Teste de percussão (som cavo): ausência de peças ocas ou mal aderidas', r:'NBR 13755 / 13754'},
+        {t:'Ausência de peças trincadas, lascadas, manchadas ou com diferença de tonalidade de lote', r:'Inspeção visual'},
+        {t:'Espaçamento entre juntas alinhado e com o mesmo tamanho em todas as peças', r:'Inspeção visual'},
+        {t:'Nicho executado conforme projeto: prumo, nível, alinhamento e acabamento adequados', r:'Projeto arquitetônico'},
+        {t:'Esquadros executados corretamente: cantos a 90° verificados com esquadro metálico', r:'NBR 13755'},
+        {t:'Teste da moeda aprovado: ausência de desníveis entre peças (moeda desliza sem travar)', r:'Inspeção tátil'},
+      ]},
+    ]
+  },
+  {
+    id:'imper', num:'FVS-03', color:'var(--c3)', colorbg:'var(--c3b)',
+    title:'Impermeabilização',
+    sub:"Banheiros, terraços, caixas d'água e áreas molhadas",
+    norma:'NBR 9575',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Local / Unidade', p:'ex: Banheiro Suíte / Apto 401', t:'text'},
+      {l:'Tipo de Impermeabilizante', p:'ex: Manta asfáltica, Cristalizante', t:'text'},
+      {l:'Data de Aplicação', p:'', t:'date'},
+      {l:'Data Teste Estanqueidade', p:'', t:'date'},
+      {l:'Fabricante / Lote', p:'Fabricante e nº do lote', t:'text'},
+    ],
+    groups:[
+      {g:'Pré-Aplicação', items:[
+        {t:'Substrato seco, limpo, isento de poeira, gordura, eflorescências e partes soltas', r:'NBR 9575'},
+        {t:'Cantos e quinas com arredondamento ou meia-cana de argamassa (raio mín. 4cm)', r:'NBR 9575'},
+        {t:'Primer/promotor de aderência aplicado conforme recomendação do fabricante', r:'Fabricante'},
+      ]},
+      {g:'Aplicação', items:[
+        {t:'Número de demãos e espessura seca conforme projeto e fabricante (mín. 2 demãos cruzadas)', r:'NBR 9575 / Fabricante'},
+        {t:'Altura de subida nas paredes conforme projeto (mín. 30cm acima do nível de água / 10cm em pisos secos)', r:'NBR 9575'},
+        {t:'Arremates em ralos, tubulações, grelhas e detalhes executados com reforço (camada extra + fibra)', r:'NBR 9575'},
+        {t:'Cura completa antes do teste de estanqueidade (mín. 72h para cristalizante / conforme fabricante)', r:'Fabricante'},
+      ]},
+      {g:'Teste de Estanqueidade (72h)', items:[
+        {t:"Ralo tampado e nível d'água marcado (lâmina ≥ 10cm); data e hora de início registradas", r:'NBR 9575'},
+        {t:"Após 72h: ausência de queda de nível d'água, manchas ou umidade no teto do pavimento inferior", r:'NBR 9575'},
+        {t:'Resultado do teste registrado em documento/foto com data, local e assinatura do responsável', r:'Sistema de gestão'},
+      ]},
+    ]
+  },
+  {
+    id:'eletrica', num:'FVS-04', color:'var(--c4)', colorbg:'var(--c4b)',
+    title:'Instalações Elétricas — Acabamentos',
+    sub:'Tomadas, interruptores, luminárias, QD e testes',
+    norma:'NBR 5410',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco C / 1º Pav.', t:'text'},
+      {l:'Unidade / Circuito', p:'ex: Apto 101 / Circ. 3', t:'text'},
+      {l:'Data', p:'', t:'date'},
+      {l:'Eletricista Responsável', p:'Nome', t:'text'},
+      {l:'Projeto Elétrico Rev.', p:'ex: Rev. 02', t:'text'},
+    ],
+    groups:[
+      {g:'Acabamentos de Pontos', items:[
+        {t:'Tomadas e interruptores instalados no prumo, nível e altura conforme projeto (tomadas 30cm / interruptores 100cm)', r:'NBR 5410 / Projeto'},
+        {t:'Placas e espelhos fixados corretamente, sem folga, nivelados e sem dano estético', r:'NBR 5410'},
+        {t:'Tomadas de uso geral com proteção (TUG) conforme NBR; tomadas em banheiros e cozinha com DR', r:'NBR 5410'},
+        {t:'Pontos de iluminação conferidos com projeto (posição, tipo de luminária, caixa de teto nivelada)', r:'Projeto elétrico'},
+      ]},
+      {g:'Quadro de Distribuição', items:[
+        {t:'QD instalado na posição correta, nível e fixado firmemente; tampa e identificação de circuitos afixadas', r:'NBR 5410'},
+        {t:'Disjuntores de capacidade correta por circuito conforme projeto; identificados e sem dano', r:'Projeto elétrico'},
+        {t:'DR (dispositivo diferencial-residual) instalado para circuitos de banheiro, cozinha e área de serviço', r:'NBR 5410'},
+      ]},
+      {g:'Testes Funcionais', items:[
+        {t:'Teste de continuidade e aterramento realizados e registrados por circuito', r:'NBR 5410'},
+        {t:'Acionamento de todos os pontos de iluminação e tomadas verificado (voltímetro / lâmpada de teste)', r:'Inspeção funcional'},
+        {t:'Ausência de cabos expostos, caixas abertas ou conduítes sem acabamento', r:'NBR 5410'},
+      ]},
+    ]
+  },
+  {
+    id:'hidraulica', num:'FVS-05', color:'var(--c5)', colorbg:'var(--c5b)',
+    title:'Instalações Hidráulicas — Infra',
+    sub:'Conferência de infra hidráulica antes do revestimento',
+    norma:'NBR 5626 / NBR 8160',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco A / 4º Pav.', t:'text'},
+      {l:'Unidade / Ambiente', p:'ex: Apto 402 / Banheiro', t:'text'},
+      {l:'Data', p:'', t:'date'},
+      {l:'Encanador Responsável', p:'Nome', t:'text'},
+      {l:'Projeto Hidráulico Rev.', p:'ex: Rev. 01', t:'text'},
+    ],
+    groups:[
+      {g:'Ramais e Pontos', items:[
+        {t:'Pontos de água fria e quente na posição e cota conforme projeto', r:'NBR 5626'},
+        {t:'Ramais de esgoto com caimento mínimo correto (DN 75 = 1% / DN 100 = 0,5%) e sem contra-caimento', r:'NBR 8160'},
+        {t:'Ralos sifonados instalados, com grelha fixada e sifão funcional (teste de vedação de odores)', r:'NBR 8160'},
+      ]},
+      {g:'Conferências de Posicionamento', items:[
+        {t:'Registro e chuveiro centralizados com o box', r:'Projeto arquitetônico'},
+        {t:'Registro e chuveiro nivelados', r:'Inspeção visual'},
+        {t:'Vaso sanitário com o afastamento adequado da parede conforme projeto', r:'NBR 9050 / Projeto'},
+        {t:'Plug alinhado com o revestimento previsto', r:'Projeto arquitetônico'},
+      ]},
+      {g:'Registros e Documentação', items:[
+        {t:'Registros fotográficos realizados (pontos, cotas e posicionamento)', r:'Sistema de gestão'},
+        {t:'As Built realizado e atualizado conforme executado', r:'Boas práticas'},
+      ]},
+    ]
+  },
+  {
+    id:'gesso', num:'FVS-06', color:'var(--c6)', colorbg:'var(--c6b)',
+    title:'Forro e Revestimento de Gesso',
+    sub:'Gesso liso, drywall, forro, molduras e sancas',
+    norma:'NBR 15758 / NBR 13207',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco B / 5º Pav.', t:'text'},
+      {l:'Unidade / Ambiente', p:'ex: Apto 501 / Sala', t:'text'},
+      {l:'Data', p:'', t:'date'},
+      {l:'Gesseiro / Equipe', p:'Nome', t:'text'},
+      {l:'Tipo de Serviço', p:'ex: Forro drywall / Gesso liso', t:'text'},
+    ],
+    groups:[
+      {g:'Pré-Execução', items:[
+        {t:'Instalações elétricas, hidráulicas e de ar-condicionado embutidas e aprovadas antes do fechamento do forro', r:'Cronograma / Projeto'},
+        {t:'Nível de referência do forro definido e marcado no perímetro do ambiente (nível a laser)', r:'Projeto arquitetônico'},
+        {t:'Substrato (para gesso liso) limpo, sem eflorescências e com umidade ≤ 4%', r:'NBR 13207'},
+      ]},
+      {g:'Estrutura e Fixação', items:[
+        {t:'Estrutura metálica (perfis U e F ou canaleta/montante) fixada conforme projeto estrutural do drywall', r:'NBR 15758'},
+        {t:'Espaçamento entre perfis conforme norma (mín. 600mm) e pendurais fixados em laje estrutural', r:'NBR 15758 / 15575'},
+        {t:'Forro ou parede nivelado/prumo verificado com régua de 2m (tolerância ≤ 3mm) e nível a laser', r:'NBR 15575'},
+      ]},
+      {g:'Acabamento e Tratamento de Juntas', items:[
+        {t:'Juntas entre placas tratadas com fita telada + massa de acabamento (3 demãos); sem trincas ou ondulações', r:'NBR 15758'},
+        {t:'Cantoneiras de alumínio ou PVC nos cantos externos fixadas e aplainadas com massa', r:'Boas práticas'},
+        {t:'Superfície final lisa, sem bolhas, poros, riscos ou imperfeições visíveis sob iluminação rasante', r:'Inspeção visual'},
+        {t:'Aberturas para pontos de iluminação, ar-condicionado e sprinklers executadas nas dimensões corretas', r:'Projeto'},
+        {t:'Molduras e sancas instaladas niveladas, coladas com gesso ou fixadas mecanicamente sem fissura', r:'Inspeção visual'},
+      ]},
+    ]
+  },
+  {
+    id:'forro_gesso', num:'FVS-07', color:'var(--c7)', colorbg:'var(--c7b)',
+    title:'Entrada do Forro de Gesso',
+    sub:'Conferência do teto antes da execução do forro',
+    norma:'NBR 15758 / NBR 13207',
+    fields:[
+      {l:'Obra', p:'Residencial Manaii', t:'text'},
+      {l:'Bloco / Pavimento', p:'ex: Bloco A / 3º Pav.', t:'text'},
+      {l:'Unidade / Ambiente', p:'ex: Apto 301 / Sala', t:'text'},
+      {l:'Data', p:'', t:'date'},
+      {l:'Gesseiro / Equipe', p:'Nome', t:'text'},
+      {l:'Responsável pela Vistoria', p:'Nome', t:'text'},
+    ],
+    groups:[
+      {g:'Condições do Teto', items:[
+        {t:'Teto devidamente tratado com zarcão: pregos, arames e elementos metálicos removidos ou protegidos', r:'Boas práticas'},
+        {t:'Tubulações chumbadas corretamente no teto, sem folga, desalinhamento ou interferência no plano do forro', r:'NBR 15758 / Projeto'},
+        {t:'Registro fotográfico do teto realizado (geral e detalhes de tubulações e pontos de atenção)', r:'Sistema de gestão'},
+      ]},
+    ]
+  },
+];
+
+const state = {};
+FVS_DATA.forEach(f => { state[f.id] = {}; });
+
+let currentFvs = null;
+let drawerOpen = false;
+
+const FVS_COLORS = {
+  massa:'var(--c1)',ceramico:'var(--c2)',imper:'var(--c3)',
+  eletrica:'var(--c4)',hidraulica:'var(--c5)',gesso:'var(--c6)',forro_gesso:'var(--c7)'
+};
+
+const PAGE_LABELS = {
+  dashboard:'Dashboard', pdf:'Exportar PDF',
+  massa:'FVS-01 · Massa Corrida', ceramico:'FVS-02 · Cerâmico',
+  imper:'FVS-03 · Impermeabilização', eletrica:'FVS-04 · Elétrica',
+  hidraulica:'FVS-05 · Hidráulica', gesso:'FVS-06 · Gesso',
+  forro_gesso:'FVS-07 · Entrada Forro'
+};
+
+function countItems(fvs) {
+  return fvs.groups.reduce((a,g) => a + g.items.length, 0);
+}
+
+function getStats(id) {
+  const fvs = FVS_DATA.find(f => f.id === id);
+  const total = countItems(fvs);
+  let conf=0, nc=0, na=0;
+  for(let i=0; i<total; i++) {
+    const s = state[id][i];
+    if(s==='conf') conf++;
+    else if(s==='nc') nc++;
+    else if(s==='na') na++;
+  }
+  return { total, conf, nc, na, pend: total-conf-nc-na };
+}
+
+// ── Build dashboard cards ──────────────────────────────────────
+function buildCards() {
+  const list = document.getElementById('fvs-card-list');
+  FVS_DATA.forEach(fvs => {
+    const total = countItems(fvs);
+    const color = FVS_COLORS[fvs.id];
+    const div = document.createElement('div');
+    div.className = 'fvs-card';
+    div.id = 'card-' + fvs.id;
+    div.onclick = () => showPage(fvs.id);
+    div.innerHTML = `
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${color};border-radius:12px 12px 0 0"></div>
+      <div class="fvs-card-top">
+        <div class="fvs-badge-num" style="background:${fvs.colorbg};color:${color}">${fvs.num}</div>
+        <div class="fvs-card-titles">
+          <div class="fvs-card-title">${fvs.title}</div>
+          <div class="fvs-card-sub">${fvs.sub}</div>
+        </div>
+        <div class="fvs-card-status st-p" id="cstatus-${fvs.id}">Pend.</div>
+      </div>
+      <div class="fvs-prog-row">
+        <div class="prog-bar"><div class="prog-fill" id="cprog-${fvs.id}" style="width:0%;background:${color}"></div></div>
+        <div class="prog-pct" id="cpct-${fvs.id}">0%</div>
+      </div>
+      <div class="fvs-mini-stats">
+        <span class="mini-s" style="background:var(--okb);color:var(--ok)" id="cms-conf-${fvs.id}">✓ 0</span>
+        <span class="mini-s" style="background:var(--ncb);color:var(--nc)" id="cms-nc-${fvs.id}">✗ 0</span>
+        <span class="mini-s" style="background:var(--peb);color:var(--pe)" id="cms-pend-${fvs.id}">◎ ${total}</span>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+// ── Build drawer list ──────────────────────────────────────────
+function buildDrawer() {
+  const list = document.getElementById('drawer-list');
+  FVS_DATA.forEach(fvs => {
+    const color = FVS_COLORS[fvs.id];
+    const total = countItems(fvs);
+    const div = document.createElement('div');
+    div.className = 'drawer-item';
+    div.id = 'ditem-' + fvs.id;
+    div.onclick = () => { toggleFvsDrawer(); showPage(fvs.id); };
+    div.innerHTML = `
+      <div class="drawer-dot" style="background:${color}"></div>
+      <div class="drawer-item-info">
+        <div class="drawer-item-num">${fvs.num}</div>
+        <div class="drawer-item-name">${fvs.title}</div>
+      </div>
+      <span class="drawer-badge db-pend" id="dbadge-${fvs.id}">${total}</span>`;
+    list.appendChild(div);
+  });
+}
+
+// ── Build PDF buttons list ─────────────────────────────────────
+function buildPdfBtns() {
+  const list = document.getElementById('pdf-btns-list');
+  FVS_DATA.forEach(fvs => {
+    const color = FVS_COLORS[fvs.id];
+    const btn = document.createElement('button');
+    btn.className = 'pdf-btn';
+    btn.style.marginBottom = '8px';
+    btn.onclick = () => gerarPDF(fvs.id);
+    btn.innerHTML = `
+      <div class="pdf-btn-icon" style="background:${fvs.colorbg}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>
+      </div>
+      <div class="pdf-btn-info">
+        <div class="pdf-btn-name" style="color:${color}">${fvs.num}</div>
+        <div class="pdf-btn-sub">${fvs.title}</div>
+      </div>`;
+    list.appendChild(btn);
+  });
+}
+
+// ── Build FVS panels ──────────────────────────────────────────
+function buildPanels() {
+  const wrap = document.getElementById('fvs-panels');
+  FVS_DATA.forEach(fvs => {
+    const color = FVS_COLORS[fvs.id];
+    const total = countItems(fvs);
+    let itemIdx = 0;
+
+    // Fields
+    let fieldsHTML = fvs.fields.map(f =>
+      `<div class="field-row">
+        <div class="field-lbl">${f.l}</div>
+        <input class="field-inp" type="${f.t}" placeholder="${f.p}" data-fvs="${fvs.id}">
+      </div>`
+    ).join('');
+
+    // Groups
+    let clHTML = '';
+    fvs.groups.forEach(grp => {
+      clHTML += `<div class="cl-group-title">
+        <span style="display:inline-block;width:3px;height:11px;border-radius:2px;background:${color};flex-shrink:0"></span>
+        ${grp.g}
+      </div>`;
+      grp.items.forEach(item => {
+        const i = itemIdx++;
+        clHTML += `<div class="cl-item" id="citem-${fvs.id}-${i}">
+          <div class="cl-item-top">
+            <span class="cl-item-num">${i+1}</span>
+            <span class="cl-item-text">${item.t}</span>
+          </div>
+          <div class="cl-item-ref">${item.r}</div>
+          <div class="cl-btns" style="margin-top:8px">
+            <button class="cl-btn" id="cb-conf-${fvs.id}-${i}" onclick="setItem('${fvs.id}',${i},'conf')">✓ Conf.</button>
+            <button class="cl-btn" id="cb-nc-${fvs.id}-${i}" onclick="setItem('${fvs.id}',${i},'nc')">✗ N.Conf.</button>
+            <button class="cl-btn" id="cb-na-${fvs.id}-${i}" onclick="setItem('${fvs.id}',${i},'na')">N/A</button>
+          </div>
+        </div>`;
+      });
+    });
+
+    const panel = document.createElement('div');
+    panel.className = 'page';
+    panel.id = 'panel-' + fvs.id;
+    panel.innerHTML = `
+      <div class="panel-head">
+        <div class="panel-icon-m" style="background:${fvs.colorbg};color:${color}">${fvs.num}</div>
+        <div class="panel-head-text">
+          <div class="panel-title-m">${fvs.title}</div>
+          <div class="panel-sub-m">${fvs.sub}</div>
+        </div>
+        <div class="panel-status-wrap">
+          <span class="st-badge st-p" id="pstatus-${fvs.id}">Pend.</span>
+        </div>
+      </div>
+      <div class="fields-section">
+        <div class="fields-section-title">Identificação</div>
+        ${fieldsHTML}
+      </div>
+      <div class="checklist-section">
+        <div class="cl-header">
+          <span>Itens de Verificação</span>
+          <span style="color:var(--tx);font-size:10px" id="cl-progress-${fvs.id}">0 / ${total}</span>
+        </div>
+        ${clHTML}
+      </div>
+      <div class="result-strip" id="rstrip-${fvs.id}">
+        <div class="rs-cell"><div class="rs-num" style="color:var(--ok)">0</div><div class="rs-lbl">Conf.</div></div>
+        <div class="rs-cell"><div class="rs-num" style="color:var(--nc)">0</div><div class="rs-lbl">N.Conf.</div></div>
+        <div class="rs-cell"><div class="rs-num" style="color:var(--mu)">0</div><div class="rs-lbl">N/A</div></div>
+        <div class="rs-cell"><div class="rs-num" style="color:var(--pe)">${total}</div><div class="rs-lbl">Pend.</div></div>
+        <div class="rs-cell"><div class="rs-num" style="color:var(--tx)">${total}</div><div class="rs-lbl">Total</div></div>
+      </div>
+      <div class="status-bar">
+        <span class="status-bar-lbl">Resultado</span>
+        <span class="st-badge st-p" id="status-${fvs.id}">Pendente</span>
+      </div>
+      <div class="obs-section">
+        <div class="obs-lbl">Observações / NCs</div>
+        <textarea class="obs-inp" placeholder="Descreva as não conformidades encontradas..." data-fvs="${fvs.id}"></textarea>
+      </div>
+      <div class="assin-section">
+        <div class="assin-box-m"><div class="assin-lbl-m">Estagiária</div><div class="assin-line-m"></div><div class="assin-sub-m">Nome / Data</div></div>
+        <div class="assin-box-m"><div class="assin-lbl-m">Mestre de Obras</div><div class="assin-line-m"></div><div class="assin-sub-m">Nome / Data</div></div>
+        <div class="assin-box-m"><div class="assin-lbl-m">Eng. Responsável</div><div class="assin-line-m"></div><div class="assin-sub-m">Nome / Data / CREA</div></div>
+      </div>`;
+    wrap.appendChild(panel);
+  });
+}
+
+// ── Navigation ─────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+
+  document.getElementById('topbar-page').textContent = PAGE_LABELS[id] || id;
+
+  if(id === 'dashboard') {
+    document.getElementById('page-dashboard').classList.add('active');
+    document.getElementById('bnav-dashboard').classList.add('active');
+    currentFvs = null;
+  } else if(id === 'pdf') {
+    document.getElementById('page-pdf').classList.add('active');
+    document.getElementById('bnav-pdf').classList.add('active');
+    currentFvs = null;
+  } else {
+    document.getElementById('panel-' + id).classList.add('active');
+    document.getElementById('bnav-fvs').classList.add('active');
+    currentFvs = id;
+  }
+
+  document.getElementById('scroll-area').scrollTop = 0;
+}
+
+function toggleFvsDrawer() {
+  drawerOpen = !drawerOpen;
+  const drawer = document.getElementById('fvs-drawer');
+  drawer.classList.toggle('open', drawerOpen);
+  if(drawerOpen) document.getElementById('bnav-fvs').classList.add('active');
+  else if(currentFvs === null) document.getElementById('bnav-fvs').classList.remove('active');
+}
+
+// ── Check item ─────────────────────────────────────────────────
+function setItem(fvsId, idx, status) {
+  state[fvsId][idx] = status;
+  ['conf','nc','na'].forEach(s => {
+    const b = document.getElementById(`cb-${s}-${fvsId}-${idx}`);
+    if(b) b.className = 'cl-btn' + (status === s ? ` active-${s}` : '');
+  });
+  const row = document.getElementById(`citem-${fvsId}-${idx}`);
+  if(row) row.className = 'cl-item' + (status === 'conf' ? ' is-conf' : status === 'nc' ? ' is-nc' : status === 'na' ? ' is-na' : '');
+  updateStats(fvsId);
+  updateGlobal();
+}
+
+function updateStats(id) {
+  const { total, conf, nc, na, pend } = getStats(id);
+  const done = conf + nc + na;
+  const pct = Math.round((done / total) * 100);
+
+  // Result strip
+  const rs = document.getElementById('rstrip-' + id);
+  if(rs) {
+    const nums = rs.querySelectorAll('.rs-num');
+    if(nums[0]) nums[0].textContent = conf;
+    if(nums[1]) nums[1].textContent = nc;
+    if(nums[2]) nums[2].textContent = na;
+    if(nums[3]) nums[3].textContent = pend;
+  }
+
+  // Progress in header
+  const cp = document.getElementById('cl-progress-' + id);
+  if(cp) cp.textContent = done + ' / ' + total;
+
+  // Status badges
+  const stClass = pend > 0 ? 'st-p' : nc > 0 ? 'st-r' : 'st-a';
+  const stTxt = pend > 0 ? 'Pendente' : nc > 0 ? '✗ Reprovado' : '✓ Aprovado';
+  const stTxtS = pend > 0 ? 'Pend.' : nc > 0 ? 'Reprov.' : 'Aprov.';
+
+  ['pstatus-','status-'].forEach((pfx, i) => {
+    const el = document.getElementById(pfx + id);
+    if(el) { el.className = 'st-badge ' + stClass; el.textContent = i === 0 ? stTxtS : stTxt; }
+  });
+
+  // Card
+  const cs = document.getElementById('cstatus-' + id);
+  if(cs) { cs.className = 'fvs-card-status ' + stClass; cs.textContent = stTxtS; }
+  const pb = document.getElementById('cprog-' + id);
+  if(pb) pb.style.width = pct + '%';
+  const pp = document.getElementById('cpct-' + id);
+  if(pp) pp.textContent = pct + '%';
+  const mc = document.getElementById('cms-conf-' + id);
+  const mn = document.getElementById('cms-nc-' + id);
+  const mp = document.getElementById('cms-pend-' + id);
+  if(mc) mc.textContent = '✓ ' + conf;
+  if(mn) mn.textContent = '✗ ' + nc;
+  if(mp) mp.textContent = '◎ ' + pend;
+
+  // Drawer badge
+  const db = document.getElementById('dbadge-' + id);
+  if(db) {
+    db.textContent = pend > 0 ? pend : nc > 0 ? '✗' : '✓';
+    db.className = 'drawer-badge ' + (pend > 0 ? 'db-pend' : nc > 0 ? 'db-nc' : 'db-ok');
+  }
+}
+
+function updateGlobal() {
+  let totalConf=0, totalNC=0, totalPend=0;
+  FVS_DATA.forEach(f => {
+    const s = getStats(f.id);
+    totalConf += s.conf; totalNC += s.nc; totalPend += s.pend;
+  });
+  document.getElementById('chip-ok').textContent = '✓ ' + totalConf;
+  document.getElementById('chip-nc').textContent = '✗ ' + totalNC;
+  document.getElementById('chip-pe').textContent = '◎ ' + totalPend;
+  document.getElementById('ds-conf').textContent = totalConf;
+  document.getElementById('ds-nc').textContent = totalNC;
+  document.getElementById('ds-pend').textContent = totalPend;
+}
+
+// ── PDF ────────────────────────────────────────────────────────
+const PRINT_CSS = `
+* { margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+body { font-family: Arial, sans-serif; font-size: 9pt; color: #111; background: #fff; }
+@page { size: A4 portrait; margin: 10mm 8mm; }
+.fvs-head { display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:2px solid #333; }
+.fvs-num { font-size:12pt; font-weight:800; padding:4px 10px; border-radius:3px; color:#fff; }
+.fvs-title { font-size:12pt; font-weight:700; color:#111; }
+.fvs-sub { font-size:7.5pt; color:#555; margin-top:2px; }
+.fvs-badge { margin-left:auto; font-size:7pt; font-weight:700; padding:3px 8px; border-radius:2px; border:1px solid; }
+.fields-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; background:#ccc; border:1px solid #ccc; }
+.field { background:#f5f5f5; padding:5px 8px; border:1px solid #ddd; }
+.field-lbl { font-size:6.5pt; text-transform:uppercase; letter-spacing:.1em; color:#777; margin-bottom:2px; }
+.field-val { font-size:8.5pt; color:#111; border-bottom:1px solid #aaa; min-height:14px; }
+.sec-bar { background:#333; color:#fff; padding:4px 10px; font-size:7.5pt; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+.grp-bar { background:#f0f0f0; color:#333; padding:4px 10px; font-size:7.5pt; font-weight:700; letter-spacing:.08em; text-transform:uppercase; border-bottom:1px solid #ddd; }
+table.items { width:100%; border-collapse:collapse; }
+table.items tr { border-bottom:1px solid #e8e8e8; }
+table.items td { padding:5px 8px; vertical-align:top; }
+.td-num { width:24px; text-align:center; font-weight:700; color:#888; font-size:8pt; }
+.item-text { font-size:8pt; color:#111; line-height:1.4; }
+.item-ref { font-size:6.5pt; color:#777; margin-top:1px; font-style:italic; }
+.td-check { width:28px; text-align:center; }
+.chk-box { width:16px; height:16px; border:1.5px solid #aaa; border-radius:2px; display:inline-flex; align-items:center; justify-content:center; font-size:9pt; font-weight:700; }
+.chk-conf { background:#E2EFDA; color:#1E7145; border-color:#1E7145; }
+.chk-nc { background:#FCE4D6; color:#C00000; border-color:#C00000; }
+.chk-na { background:#EDEDED; color:#666; font-size:5pt; }
+.result-row { display:flex; border-top:1px solid #ddd; background:#f9f9f9; }
+.result-cell { flex:1; text-align:center; padding:7px 4px; border-right:1px solid #ddd; }
+.result-cell:last-child { border-right:none; }
+.r-num { font-size:16pt; font-weight:800; line-height:1; }
+.r-lbl { font-size:6pt; text-transform:uppercase; letter-spacing:.08em; color:#777; margin-top:2px; }
+.status-row { display:flex; align-items:center; justify-content:space-between; padding:6px 10px; background:#f5f5f5; border-top:1px solid #ccc; }
+.st-lbl { font-size:7.5pt; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:.1em; }
+.st-val { font-size:7.5pt; font-weight:800; padding:3px 10px; border-radius:2px; text-transform:uppercase; border:1px solid; }
+.st-a { background:#E2EFDA; color:#1E7145; border-color:#1E7145; }
+.st-r { background:#FCE4D6; color:#C00000; border-color:#C00000; }
+.st-p { background:#FFF2CC; color:#BF8F00; border-color:#BF8F00; }
+.obs-wrap { padding:5px 10px; border-top:1px solid #ddd; }
+.obs-lbl { font-size:6.5pt; text-transform:uppercase; letter-spacing:.1em; color:#777; margin-bottom:3px; }
+.obs-box { border:1px solid #ddd; min-height:36px; padding:4px 6px; font-size:8pt; color:#111; }
+.assin-grid { display:grid; grid-template-columns:repeat(3,1fr); border-top:2px solid #ccc; }
+.assin-cell { padding:8px 10px; border-right:1px solid #ddd; background:#f9f9f9; }
+.assin-cell:last-child { border-right:none; }
+.assin-lbl { font-size:6.5pt; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#777; margin-bottom:14px; }
+.assin-line { border-bottom:1px solid #999; margin-bottom:3px; height:20px; }
+.assin-sub { font-size:6pt; color:#aaa; }
+.emit { margin-top:4px; font-size:6.5pt; color:#aaa; text-align:right; padding:3px 10px; border-top:1px solid #eee; }
+.cover { padding:16mm 12mm; page-break-after:always; }
+.cover h1 { font-size:20pt; font-weight:800; border-bottom:3px solid #111; padding-bottom:6px; margin-bottom:4px; }
+.cover .sub { font-size:9pt; color:#555; margin-bottom:16px; }
+.cover table { width:100%; border-collapse:collapse; font-size:8.5pt; margin-top:10px; }
+.cover table th { background:#1c1c1c; color:#fff; padding:5px 8px; text-align:left; font-size:7.5pt; letter-spacing:.08em; text-transform:uppercase; }
+.cover table td { padding:6px 8px; border-bottom:1px solid #ddd; }
+.cover table tr:nth-child(even) td { background:#f7f7f7; }
+.cover .emit-cover { margin-top:16px; font-size:7.5pt; color:#777; }
+.pct-ok { color:#1E7145; font-weight:700; } .pct-fail { color:#C00000; font-weight:700; } .pct-pend { color:#BF8F00; font-weight:700; }
+`;
+
+function buildFvsHTMLForPrint(fvs) {
+  const s = getStats(fvs.id);
+  let itemIdx = 0;
+  let groupsHTML = '';
+
+  const panel = document.getElementById('panel-' + fvs.id);
+  const fieldInputs = panel ? panel.querySelectorAll('.field-inp') : [];
+  let fieldsHTML = '';
+  fvs.fields.forEach((f, fi) => {
+    const val = fieldInputs[fi] ? (fieldInputs[fi].value || fieldInputs[fi].placeholder || '') : '';
+    fieldsHTML += `<div class="field"><div class="field-lbl">${f.l}</div><div class="field-val">${val}</div></div>`;
+  });
+
+  fvs.groups.forEach(grp => {
+    let rows = '';
+    grp.items.forEach(item => {
+      const i = itemIdx++;
+      const st = state[fvs.id][i];
+      let chkCls='', chkChar='&nbsp;';
+      if(st==='conf'){chkCls='chk-conf';chkChar='✓';}
+      else if(st==='nc'){chkCls='chk-nc';chkChar='✗';}
+      else if(st==='na'){chkCls='chk-na';chkChar='N/A';}
+      rows += `<tr><td class="td-num">${i+1}</td><td><div class="item-text">${item.t}</div><div class="item-ref">${item.r}</div></td><td class="td-check"><div class="chk-box ${chkCls}">${chkChar}</div></td></tr>`;
+    });
+    groupsHTML += `<div class="grp-bar">${grp.g}</div><table class="items">${rows}</table>`;
+  });
+
+  const stCls = s.pend>0?'st-p':s.nc>0?'st-r':'st-a';
+  const stTxt = s.pend>0?'Pendente':s.nc>0?'✗ Reprovado':'✓ Aprovado';
+  const obsEl = panel ? panel.querySelector('.obs-inp') : null;
+  const obsVal = obsEl && obsEl.value ? obsEl.value : '';
+  const now = new Date();
+  const ds = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const colorHex = {'var(--c1)':'#60A5FA','var(--c2)':'#34D399','var(--c3)':'#A78BFA','var(--c4)':'#FBBF24','var(--c5)':'#38BDF8','var(--c6)':'#F472B6','var(--c7)':'#FB923C'};
+  const c = colorHex[fvs.color] || '#888';
+  return `<div class="fvs-head"><div class="fvs-num" style="background:${c}">${fvs.num}</div><div><div class="fvs-title">${fvs.title}</div><div class="fvs-sub">${fvs.sub} · ${fvs.norma}</div></div></div>
+    <div class="fields-grid">${fieldsHTML}</div>
+    <div class="sec-bar">Itens de Verificação · C = Conforme · NC = Não Conforme · N/A = Não Aplicável</div>
+    ${groupsHTML}
+    <div class="result-row"><div class="result-cell"><div class="r-num" style="color:#1E7145">${s.conf}</div><div class="r-lbl">Conforme</div></div><div class="result-cell"><div class="r-num" style="color:#C00000">${s.nc}</div><div class="r-lbl">Não Conf.</div></div><div class="result-cell"><div class="r-num" style="color:#888">${s.na}</div><div class="r-lbl">N/A</div></div><div class="result-cell"><div class="r-num" style="color:#BF8F00">${s.pend}</div><div class="r-lbl">Pendentes</div></div><div class="result-cell"><div class="r-num" style="color:#333">${s.total}</div><div class="r-lbl">Total</div></div></div>
+    <div class="status-row"><span class="st-lbl">Resultado</span><span class="st-val ${stCls}">${stTxt}</span></div>
+    <div class="obs-wrap"><div class="obs-lbl">Observações / NCs</div><div class="obs-box">${obsVal}</div></div>
+    <div class="assin-grid"><div class="assin-cell"><div class="assin-lbl">Estagiária</div><div class="assin-line"></div><div class="assin-sub">Nome / Data</div></div><div class="assin-cell"><div class="assin-lbl">Mestre de Obras</div><div class="assin-line"></div><div class="assin-sub">Nome / Data</div></div><div class="assin-cell"><div class="assin-lbl">Eng. Responsável</div><div class="assin-line"></div><div class="assin-sub">Nome / Data / CREA</div></div></div>
+    <div class="emit">Residencial Manaii · ${ds} · Rev. 00</div>`;
+}
+
+function buildCoverHTMLForPrint() {
+  const now = new Date();
+  const ds = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  const numMap = {massa:'FVS-01',ceramico:'FVS-02',imper:'FVS-03',eletrica:'FVS-04',hidraulica:'FVS-05',gesso:'FVS-06',forro_gesso:'FVS-07'};
+  let rows = '';
+  FVS_DATA.forEach(fvs => {
+    const s = getStats(fvs.id);
+    let res,cls;
+    if(s.pend>0){res='Pendente';cls='pct-pend';}
+    else if(s.nc>0){res='✗ Reprovado';cls='pct-fail';}
+    else{res='✓ Aprovado';cls='pct-ok';}
+    rows += `<tr><td><strong>${numMap[fvs.id]}</strong></td><td>${fvs.title}</td><td style="text-align:center">${s.total}</td><td style="text-align:center;color:#1E7145;font-weight:700">${s.conf}</td><td style="text-align:center;color:#C00000;font-weight:700">${s.nc}</td><td style="text-align:center;color:#666">${s.na}</td><td style="text-align:center;color:#BF8F00;font-weight:700">${s.pend}</td><td style="text-align:center" class="${cls}">${res}</td></tr>`;
+  });
+  return `<div class="cover"><h1>Residencial Manaii</h1><div class="sub">Relatório de Vistoria — FVS · Fase de Acabamentos</div><table><thead><tr><th>FVS</th><th>Serviço</th><th style="text-align:center">Total</th><th style="text-align:center">C</th><th style="text-align:center">NC</th><th style="text-align:center">N/A</th><th style="text-align:center">Pend.</th><th style="text-align:center">Resultado</th></tr></thead><tbody>${rows}</tbody></table><div class="emit-cover">Emitido em ${ds} · Rev. 00</div></div>`;
+}
+
+function gerarPDF(alvo) {
+  let bodyHTML = alvo === 'todas'
+    ? buildCoverHTMLForPrint() + FVS_DATA.map(f => `<div style="page-break-before:always">${buildFvsHTMLForPrint(f)}</div>`).join('')
+    : buildFvsHTMLForPrint(FVS_DATA.find(f => f.id === alvo));
+
+  const old = document.getElementById('print-container');
+  if(old) old.remove();
+  const oldS = document.getElementById('print-style');
+  if(oldS) oldS.remove();
+
+  const container = document.createElement('div');
+  container.id = 'print-container';
+  container.innerHTML = `<style>${PRINT_CSS}</style>` + bodyHTML;
+  document.body.appendChild(container);
+
+  const style = document.createElement('style');
+  style.id = 'print-style';
+  style.textContent = `@media print{@page{size:A4 portrait;margin:10mm 8mm;}html,body{visibility:hidden!important;background:white!important;}#print-container,#print-container *{visibility:visible!important;}#print-container{display:block!important;position:fixed!important;top:0!important;left:0!important;width:100%!important;background:white!important;z-index:999999!important;}*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}}#print-container{display:none;}`;
+  document.head.appendChild(style);
+
+  setTimeout(() => {
+    window.print();
+    setTimeout(() => {
+      const c = document.getElementById('print-container');
+      const s = document.getElementById('print-style');
+      if(c) c.remove(); if(s) s.remove();
+    }, 2000);
+  }, 250);
+}
+
+// ── Init ──────────────────────────────────────────────────────
+buildCards();
+buildDrawer();
+buildPanels();
+buildPdfBtns();
+updateGlobal();
+</script>
+</body>
+</html>
